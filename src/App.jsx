@@ -13,6 +13,49 @@ const ContactPage = lazy(() => import('./Pages/Pubic/Contact/ContactPage.jsx'));
 const Login = lazy(() => import('./Pages/Admin/Login/Login.jsx'));
 const Register = lazy(() => import('./Pages/Admin/Register/Register.jsx'));
 
+// Add missing components
+const LoadingBar = () => (
+  <div className="loading-bar">
+    <div className="spinner"></div>
+    <p>Loading...</p>
+  </div>
+);
+
+const PageTransition = ({ children }) => {
+  const pageVariants = {
+    initial: {
+      opacity: 0,
+      y: 20,
+    },
+    in: {
+      opacity: 1,
+      y: 0,
+    },
+    out: {
+      opacity: 0,
+      y: -20,
+    }
+  };
+
+  const pageTransition = {
+    type: 'tween',
+    ease: 'anticipate',
+    duration: 0.5
+  };
+
+  return (
+    <motion.div
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      transition={pageTransition}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 const ProtectedRoute = ({ children }) => {
   const isAdmin = localStorage.getItem('isAdmin') === 'true';
   if (!isAdmin) {
@@ -43,9 +86,7 @@ function AppRoutes() {
               <Register />
             </PageTransition>
           } />
-          
-
-<Route path="/contact" element={
+          <Route path="/contact" element={
             <PageTransition>
               <ContactPage />
             </PageTransition>
@@ -68,7 +109,6 @@ function AppRoutes() {
     </AnimatePresence>
   );
 }
-
 
 function App() {
   return (
