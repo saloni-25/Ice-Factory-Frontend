@@ -6,12 +6,13 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
-const HomePage = lazy(() => import('./Pages/Pubic/Home/HomePage.jsx'));
-const AdminLogin = lazy(() => import('./Pages/Admin/Login/AdminLogin.jsx'));
-const AdminDashboard = lazy(() => import('./Pages/Admin/Dashboard/AdminDashboard.jsx'));
-const ContactPage = lazy(() => import('./Pages/Pubic/Contact/ContactPage.jsx'));
-const Login = lazy(() => import('./Pages/Admin/Login/Login.jsx'));
-const Register = lazy(() => import('./Pages/Admin/Register/Register.jsx'));
+// const HomePage = lazy(() => import('./Pages/Pubic/Home/HomePage.jsx'));
+// const AdminLogin = lazy(() => import('./Pages/Public/Login/AdminLogin.js'));
+// const AdminDashboard = lazy(() => import('./Pages/Public/Dashboard/AdminDashboard.js'));
+// const ContactPage = lazy(() => import('./Pages/Pubic/Contact/ContactPage.jsx'));
+// const Login = lazy(() => import('./Pages/Public/Login/Login.js'));
+// const Register = lazy(() => import('./Pages/Public/Register/Register.js'));
+const OrderDetails = lazy(() => import('./Pages/Public/Orders/OrderDetails.jsx'));
 
 // Add missing components
 const LoadingBar = () => (
@@ -73,37 +74,42 @@ function AppRoutes() {
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={
             <PageTransition>
-              <HomePage />
+              <OrderDetails />
             </PageTransition>
           } />
-          <Route path="/login" element={
+          {/* <Route path="/login" element={
             <PageTransition>
               <Login />
             </PageTransition>
-          } />
-          <Route path="/register" element={
+          } /> */}
+          {/* <Route path="/register" element={
             <PageTransition>
               <Register />
             </PageTransition>
-          } />
-          <Route path="/contact" element={
+          } /> */}
+          {/* <Route path="/contact" element={
             <PageTransition>
               <ContactPage />
             </PageTransition>
-          } />
-          <Route path="/admin/login" element={
+          } /> */}
+          {/* <Route path="/order-details" element={
+            <PageTransition>
+              <OrderDetails />
+            </PageTransition>
+          } /> */}
+          {/* <Route path="/admin/login" element={
             <PageTransition>
               <AdminLogin />
             </PageTransition>
-          } />
-          {/* Protected Admin Routes */}
-          <Route path="/admin/dashboard" element={
+          } /> */}
+         
+          {/* <Route path="/admin/dashboard" element={
             <ProtectedRoute>
               <PageTransition>
                 <AdminDashboard />
               </PageTransition>
             </ProtectedRoute>
-          } />
+          } /> */}
         </Routes>
       </Suspense>
     </AnimatePresence>
