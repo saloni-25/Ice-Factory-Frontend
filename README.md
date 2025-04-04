@@ -1,5 +1,5 @@
 # React + Vite
 <br>
 
-Never ever Mess with Turtles
-They caan be Slow but never lose
+Never ever Mess with Turtles <br>
+They caan be Slow but will never Lose
