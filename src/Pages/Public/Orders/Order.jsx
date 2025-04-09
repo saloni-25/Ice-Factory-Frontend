@@ -6,6 +6,7 @@ const Order = () => {
   const navigate = useNavigate();
   const [dateCards, setDateCards] = useState([]);
   const [availabilityData, setAvailabilityData] = useState({});
+  const [orderForecast, setOrderForecast] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -34,49 +35,47 @@ const Order = () => {
     generateDateCards();
   }, []);
 
-  // Fetch availability data for the next 15 days
+  // Fetch order forecast data for the next 15 days from backend API
   useEffect(() => {
-    const fetchAvailabilityData = async () => {
+    const fetchOrderForecast = async () => {
       try {
         setLoading(true);
         
-        // In a real app, you would make an API call here
-        // For demonstration, I'm creating mock data
-        const mockData = {};
-        const today = new Date();
+        // Make the actual API call
+        const response = await fetch('http://localhost:8080/api/public/orders/forecast/next-15-days');
         
-        for (let i = 0; i < 15; i++) {
-          const date = new Date(today);
-          date.setDate(today.getDate() + i);
-          const dateString = date.toISOString().split('T')[0];
-          
-          // Random availability data
-          mockData[dateString] = {
-            largeBlocks: Math.floor(Math.random() * 200) + 50, // Random number between 50 and 250
-            smallBlocks: Math.floor(Math.random() * 300) + 100, // Random number between 100 and 400
-            totalOrdersForDate: Math.floor(Math.random() * 20) + 1 // Random orders between 1 and 20
-          };
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
         
-        // Simulate API delay
-        setTimeout(() => {
-          setAvailabilityData(mockData);
-          setLoading(false);
-        }, 1000);
+        const forecastData = await response.json();
+        setOrderForecast(forecastData);
         
-        // In a real app, the code would look something like this:
-        // const response = await fetch('/api/availability/next15days');
-        // const data = await response.json();
-        // setAvailabilityData(data);
-        // setLoading(false);
-      } catch (err) {
-        setError("Failed to load availability data");
+        // Also generate some mock availability data based on the forecast
+        // In a real app, this would come from another API endpoint
+        const mockAvailability = {};
+        Object.keys(forecastData).forEach(dateString => {
+          // The more orders there are, the less availability
+          const orderCount = forecastData[dateString];
+          const totalCapacity = 500; // Example total capacity for a day
+          
+          mockAvailability[dateString] = {
+            largeBlocks: Math.max(0, 200 - (orderCount * 5)), // Reduce availability based on orders
+            smallBlocks: Math.max(0, 300 - (orderCount * 8)),
+            totalOrdersForDate: orderCount
+          };
+        });
+        
+        setAvailabilityData(mockAvailability);
         setLoading(false);
-        console.error("Error fetching availability data:", err);
+      } catch (err) {
+        setError("Failed to load order forecast data");
+        setLoading(false);
+        console.error("Error fetching order forecast data:", err);
       }
     };
     
-    fetchAvailabilityData();
+    fetchOrderForecast();
   }, []);
 
   // Handle date selection
@@ -85,21 +84,23 @@ const Order = () => {
     navigate('/order-details', { 
       state: { 
         selectedDate: dateString,
-        availability: availabilityData[dateString] 
+        availability: availabilityData[dateString],
+        orderCount: orderForecast[dateString] || 0
       } 
     });
   };
 
-  // Calculate availability percentage
+  // Calculate availability percentage based on order forecast
   const getAvailabilityStatus = (dateString) => {
-    if (!availabilityData[dateString]) return { status: 'unknown', percentage: 0 };
+    if (!orderForecast[dateString] && orderForecast[dateString] !== 0) {
+      return { status: 'unknown', percentage: 0 };
+    }
     
-    const data = availabilityData[dateString];
-    const totalBlocks = data.largeBlocks + data.smallBlocks;
-    
-    // This is a simplified calculation - in reality you'd determine this based on
-    // total capacity vs orders placed for that day
-    const availabilityPercentage = Math.max(0, 100 - (data.totalOrdersForDate * 5));
+    // Calculate availability based on number of orders
+    // Assume each day can handle a maximum of 20 orders
+    const orderCount = orderForecast[dateString];
+    const maxOrders = 20;
+    const availabilityPercentage = Math.max(0, Math.min(100, 100 - (orderCount / maxOrders * 100)));
     
     let status = 'high';
     if (availabilityPercentage < 30) status = 'low';
@@ -119,6 +120,7 @@ const Order = () => {
       <div className="date-cards-container">
         {dateCards.map((dateInfo) => {
           const availability = getAvailabilityStatus(dateInfo.dateString);
+          const orderCount = orderForecast[dateInfo.dateString] || 0;
           
           return (
             <div 
@@ -147,10 +149,16 @@ const Order = () => {
                   </div>
                 </div>
                 
-                <div className="inventory-info">
-                  <p>Large blocks: {availabilityData[dateInfo.dateString].largeBlocks}</p>
-                  <p>Small blocks: {availabilityData[dateInfo.dateString].smallBlocks}</p>
+                <div className="order-info">
+                  <p>Orders placed: {orderCount}</p>
                 </div>
+                
+                {availabilityData[dateInfo.dateString] && (
+                  <div className="inventory-info">
+                    <p>Large blocks: {availabilityData[dateInfo.dateString].largeBlocks}</p>
+                    <p>Small blocks: {availabilityData[dateInfo.dateString].smallBlocks}</p>
+                  </div>
+                )}
               </div>
             </div>
           );
