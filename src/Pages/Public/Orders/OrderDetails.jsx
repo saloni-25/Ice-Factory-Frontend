@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const OrderDetails = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
+  
+  // Get selected date from location state if available
+  const selectedDate = location.state?.selectedDate || '';
+  const availability = location.state?.availability || null;
+  
   const [formData, setFormData] = useState({
     customerName: '',
     customerPhone: '',
     deliveryAddress: '',
-    deliveryDate: '',
+    deliveryDate: selectedDate,
     deliveryTime: '',
     paymentMethod: 'Cash on Delivery',
     items: [
-      { id: 1, name: 'Ice Block - Large', quantity: 0, price: 100.00 },
-      { id: 2, name: 'Ice Block - Small', quantity: 0, price: 50.00 }
+      { id: 1, name: 'Ice Block - Large', quantity: 0, price: 100.00, available: availability?.largeBlocks || 200 },
+      { id: 2, name: 'Ice Block - Small', quantity: 0, price: 50.00, available: availability?.smallBlocks || 300 }
     ]
   });
 
@@ -31,10 +37,15 @@ const OrderDetails = () => {
   };
 
   const handleQuantityChange = (id, quantity) => {
+    // Parse quantity and ensure it doesn't exceed available amount
+    const parsedQuantity = parseInt(quantity) || 0;
+    const item = formData.items.find(i => i.id === id);
+    const validQuantity = Math.min(parsedQuantity, item.available);
+    
     setFormData({
       ...formData,
       items: formData.items.map(item => 
-        item.id === id ? { ...item, quantity: parseInt(quantity) || 0 } : item
+        item.id === id ? { ...item, quantity: validQuantity } : item
       )
     });
   };
@@ -152,6 +163,7 @@ const OrderDetails = () => {
               <tr>
                 <th>Item</th>
                 <th>Price (₹)</th>
+                <th>Available</th>
                 <th>Quantity</th>
                 <th>Total (₹)</th>
               </tr>
@@ -161,10 +173,12 @@ const OrderDetails = () => {
                 <tr key={item.id}>
                   <td>{item.name}</td>
                   <td>₹{item.price.toFixed(2)}</td>
+                  <td>{item.available}</td>
                   <td>
                     <input
                       type="number"
                       min="0"
+                      max={item.available}
                       value={item.quantity}
                       onChange={(e) => handleQuantityChange(item.id, e.target.value)}
                       className="quantity-input"
@@ -176,7 +190,7 @@ const OrderDetails = () => {
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan="3"><strong>Total Amount</strong></td>
+                <td colSpan="4"><strong>Total Amount</strong></td>
                 <td><strong>₹{totalAmount.toFixed(2)}</strong></td>
               </tr>
             </tfoot>
@@ -209,9 +223,9 @@ const OrderDetails = () => {
           <button 
             type="button" 
             className="btn secondary"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/orders')}
           >
-            Cancel
+            Back to Calendar
           </button>
         </div>
       </form>
