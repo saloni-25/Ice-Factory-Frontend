@@ -1,0 +1,147 @@
+.order-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #003366;
+  text-align: center;
+}
+
+.instruction {
+  text-align: center;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.date-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.date-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.date-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.date-card.availability-high {
+  border-top: 4px solid #4CAF50; /* Green */
+}
+
+.date-card.availability-medium {
+  border-top: 4px solid #FFC107; /* Amber */
+}
+
+.date-card.availability-low {
+  border-top: 4px solid #F44336; /* Red */
+}
+
+.date-card-inner {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.day-name {
+  font-size: 1rem;
+  color: #666;
+}
+
+.day-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+  color: #003366;
+}
+
+.month {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.availability-indicator {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.availability-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.status-high {
+  color: #4CAF50;
+}
+
+.status-medium {
+  color: #FFC107;
+}
+
+.status-low {
+  color: #F44336;
+}
+
+.availability-bar {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.availability-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.availability-fill.status-high {
+  background-color: #4CAF50;
+}
+
+.availability-fill.status-medium {
+  background-color: #FFC107;
+}
+
+.availability-fill.status-low {
+  background-color: #F44336;
+}
+
+.inventory-info {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.inventory-info p {
+  margin: 0.2rem 0;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error {
+  color: #F44336;
+}
