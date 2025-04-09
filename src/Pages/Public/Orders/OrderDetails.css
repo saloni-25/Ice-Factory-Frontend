@@ -1,0 +1,138 @@
+.order-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f8fafc;
+}
+
+.order-details-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 700px;
+}
+
+h1 {
+  color: #0c4a6e;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+h3 {
+  color: #0c4a6e;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.required {
+  color: #e11d48;
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: #f8fafc;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #0c4a6e;
+  box-shadow: 0 0 0 2px rgba(12, 74, 110, 0.2);
+  background-color: white;
+}
+
+textarea.input-field {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.quantity-input {
+  width: 150px;
+}
+
+.availability-info {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  flex: 1;
+}
+
+.primary {
+  background-color: #0c4a6e;
+  color: white;
+}
+
+.primary:hover {
+  background-color: #075985;
+}
+
+.primary:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.secondary {
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.secondary:hover {
+  background-color: #cbd5e1;
+}
+
+@media (max-width: 640px) {
+  .order-details-card {
+    padding: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+}

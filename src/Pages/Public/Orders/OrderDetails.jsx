@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import './OrderDetails.css';
 
 const OrderDetails = () => {
   const navigate = useNavigate();
@@ -15,18 +16,8 @@ const OrderDetails = () => {
     customerPhone: '',
     deliveryAddress: '',
     deliveryDate: selectedDate,
-    deliveryTime: '',
-    paymentMethod: 'Cash on Delivery',
-    items: [
-      { id: 1, name: 'Ice Block - Large', quantity: 0, price: 100.00, available: availability?.largeBlocks || 200 },
-      { id: 2, name: 'Ice Block - Small', quantity: 0, price: 50.00, available: availability?.smallBlocks || 300 }
-    ]
+    quantity: 1
   });
-
-  // Calculate total amount
-  const totalAmount = formData.items.reduce((sum, item) => {
-    return sum + (item.quantity * item.price);
-  }, 0);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,32 +27,12 @@ const OrderDetails = () => {
     });
   };
 
-  const handleQuantityChange = (id, quantity) => {
-    // Parse quantity and ensure it doesn't exceed available amount
-    const parsedQuantity = parseInt(quantity) || 0;
-    const item = formData.items.find(i => i.id === id);
-    const validQuantity = Math.min(parsedQuantity, item.available);
-    
-    setFormData({
-      ...formData,
-      items: formData.items.map(item => 
-        item.id === id ? { ...item, quantity: validQuantity } : item
-      )
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Validate form
-    if (!formData.customerName || !formData.customerPhone || !formData.deliveryAddress || !formData.deliveryDate) {
+    if (!formData.customerName || !formData.customerPhone || !formData.deliveryAddress || !formData.deliveryDate || formData.quantity < 1) {
       alert('Please fill all required fields');
-      return;
-    }
-    
-    // Check if at least one item has a quantity greater than 0
-    if (!formData.items.some(item => item.quantity > 0)) {
-      alert('Please select at least one item');
       return;
     }
     
@@ -74,7 +45,7 @@ const OrderDetails = () => {
       setTimeout(() => {
         setLoading(false);
         alert('Order placed successfully!');
-        navigate('/order-confirmation', { state: { orderDetails: formData } });
+        navigate('/order-history');
       }, 1000);
     } catch (error) {
       setLoading(false);
@@ -84,151 +55,111 @@ const OrderDetails = () => {
 
   return (
     <div className="order-details-container">
-      <h1>Order Details</h1>
-      
-      <form onSubmit={handleSubmit} className="order-form">
-        <div className="customer-info-section">
-          <h3>Customer Information</h3>
-          <div className="form-group">
-            <label htmlFor="customerName">Name *</label>
-            <input
-              type="text"
-              id="customerName"
-              name="customerName"
-              value={formData.customerName}
-              onChange={handleInputChange}
-              required
-              placeholder="Enter your full name"
-            />
+      <div className="order-details-card">
+        <h1>Order Details</h1>
+        
+        <form onSubmit={handleSubmit} className="order-form">
+          <div className="form-section">
+            <h3>Customer Information</h3>
+            <div className="form-group">
+              <label htmlFor="customerName">Name <span className="required">*</span></label>
+              <input
+                type="text"
+                id="customerName"
+                name="customerName"
+                value={formData.customerName}
+                onChange={handleInputChange}
+                required
+                placeholder="Enter your full name"
+                className="input-field"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="customerPhone">Phone Number <span className="required">*</span></label>
+              <input
+                type="tel"
+                id="customerPhone"
+                name="customerPhone"
+                value={formData.customerPhone}
+                onChange={handleInputChange}
+                required
+                placeholder="Enter your phone number"
+                className="input-field"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="deliveryAddress">Delivery Address <span className="required">*</span></label>
+              <textarea
+                id="deliveryAddress"
+                name="deliveryAddress"
+                value={formData.deliveryAddress}
+                onChange={handleInputChange}
+                required
+                placeholder="Enter your complete delivery address"
+                rows="3"
+                className="input-field"
+              ></textarea>
+            </div>
           </div>
           
-          <div className="form-group">
-            <label htmlFor="customerPhone">Phone Number *</label>
-            <input
-              type="tel"
-              id="customerPhone"
-              name="customerPhone"
-              value={formData.customerPhone}
-              onChange={handleInputChange}
-              required
-              placeholder="Enter your phone number"
-            />
+          <div className="form-section">
+            <h3>Delivery Information</h3>
+            <div className="form-group">
+              <label htmlFor="deliveryDate">Delivery Date <span className="required">*</span></label>
+              <input
+                type="date"
+                id="deliveryDate"
+                name="deliveryDate"
+                value={formData.deliveryDate}
+                onChange={handleInputChange}
+                required
+                min={new Date().toISOString().split('T')[0]}
+                className="input-field"
+              />
+            </div>
           </div>
           
-          <div className="form-group">
-            <label htmlFor="deliveryAddress">Delivery Address *</label>
-            <textarea
-              id="deliveryAddress"
-              name="deliveryAddress"
-              value={formData.deliveryAddress}
-              onChange={handleInputChange}
-              required
-              placeholder="Enter your complete delivery address"
-              rows="3"
-            ></textarea>
-          </div>
-        </div>
-        
-        <div className="delivery-info-section">
-          <h3>Delivery Information</h3>
-          <div className="form-group">
-            <label htmlFor="deliveryDate">Delivery Date *</label>
-            <input
-              type="date"
-              id="deliveryDate"
-              name="deliveryDate"
-              value={formData.deliveryDate}
-              onChange={handleInputChange}
-              required
-              min={new Date().toISOString().split('T')[0]}
-            />
+          <div className="form-section">
+            <h3>Ice Block Details</h3>
+            <div className="form-group">
+              <label htmlFor="quantity">Quantity <span className="required">*</span></label>
+              <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                value={formData.quantity}
+                onChange={handleInputChange}
+                min="1"
+                max={availability?.largeBlocks || 200}
+                required
+                className="input-field quantity-input"
+              />
+              <div className="availability-info">
+                <span>{availability?.largeBlocks || 'Many'} blocks available</span>
+              </div>
+            </div>
           </div>
           
-          <div className="form-group">
-            <label htmlFor="deliveryTime">Preferred Delivery Time</label>
-            <input
-              type="time"
-              id="deliveryTime"
-              name="deliveryTime"
-              value={formData.deliveryTime}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-        
-        <div className="order-items-section">
-          <h3>Order Items</h3>
-          <table className="items-table">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Price (₹)</th>
-                <th>Available</th>
-                <th>Quantity</th>
-                <th>Total (₹)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {formData.items.map(item => (
-                <tr key={item.id}>
-                  <td>{item.name}</td>
-                  <td>₹{item.price.toFixed(2)}</td>
-                  <td>{item.available}</td>
-                  <td>
-                    <input
-                      type="number"
-                      min="0"
-                      max={item.available}
-                      value={item.quantity}
-                      onChange={(e) => handleQuantityChange(item.id, e.target.value)}
-                      className="quantity-input"
-                    />
-                  </td>
-                  <td>₹{(item.quantity * item.price).toFixed(2)}</td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td colSpan="4"><strong>Total Amount</strong></td>
-                <td><strong>₹{totalAmount.toFixed(2)}</strong></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-        
-        <div className="payment-info-section">
-          <h3>Payment Method</h3>
-          <div className="form-group">
-            <select 
-              name="paymentMethod" 
-              value={formData.paymentMethod} 
-              onChange={handleInputChange}
+          <div className="form-actions">
+            <button 
+              type="submit" 
+              className="btn primary" 
+              disabled={loading}
             >
-              <option value="Cash on Delivery">Cash on Delivery</option>
-              <option value="Online Payment">Online Payment</option>
-              <option value="UPI">UPI</option>
-            </select>
+              {loading ? 'Processing...' : 'Place Order'}
+            </button>
+            <button 
+              type="button" 
+              className="btn secondary"
+              onClick={() => navigate('/orders')}
+            >
+              Back
+            </button>
           </div>
-        </div>
-        
-        <div className="form-actions">
-          <button 
-            type="submit" 
-            className="btn primary" 
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : 'Place Order'}
-          </button>
-          <button 
-            type="button" 
-            className="btn secondary"
-            onClick={() => navigate('/orders')}
-          >
-            Back to Calendar
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
