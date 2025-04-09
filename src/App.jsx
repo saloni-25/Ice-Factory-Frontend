@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const Order = lazy(() => import('./Pages/Public/Orders/Order.jsx'));
 const OrderDetails = lazy(() => import('./Pages/Public/Orders/OrderDetails.jsx'));
+const OrderHistory = lazy(() => import('./Pages/Public/Orders/OrderHistory.jsx'));
 
 // Add missing components
 const LoadingBar = () => (
@@ -80,6 +81,11 @@ function AppRoutes() {
           <Route path="/order-details" element={
             <PageTransition>
               <OrderDetails />
+            </PageTransition>
+          } />
+          <Route path="/order-history" element={
+            <PageTransition>
+              <OrderHistory />
             </PageTransition>
           } />
           {/* Add other routes as needed */}
