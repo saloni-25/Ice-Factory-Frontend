@@ -1,8 +1,10 @@
 .order-container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -22,6 +24,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
+  width: 100%;
 }
 
 .date-card {
@@ -31,6 +34,39 @@ h1 {
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+}
+
+/* Make the cards spread across the full width with max 5 columns */
+@media (min-width: 768px) {
+  .date-cards-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .date-cards-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .date-cards-container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Mobile friendly layout */
+@media (max-width: 767px) {
+  .date-cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .date-cards-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .date-card:hover {
@@ -125,6 +161,24 @@ h1 {
   background-color: #F44336;
 }
 
+.order-info {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #666;
+  background-color: #f8fafc;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.order-info p {
+  margin: 0.2rem 0;
+}
+
+.order-info strong {
+  color: #003366;
+  font-size: 1rem;
+}
+
 .inventory-info {
   margin-top: 0.5rem;
   font-size: 0.875rem;
@@ -144,4 +198,23 @@ h1 {
 
 .error {
   color: #F44336;
+}
+
+/* Add styles for the error message */
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Add a style for the capacity info at the bottom */
+.capacity-info {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
 }
