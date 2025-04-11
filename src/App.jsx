@@ -10,7 +10,10 @@ const Order = lazy(() => import('./Pages/Public/Orders/Order.jsx'));
 const OrderDetails = lazy(() => import('./Pages/Public/Orders/OrderDetails.jsx'));
 const OrderHistory = lazy(() => import('./Pages/Public/Orders/OrderHistory.jsx'));
 const HomePage = lazy(() => import('./Pages/Public/HomePage/HomePage.jsx'));
-
+const AdminDashboard = lazy(() => import('./Pages/Admin/pages/Dashboard.jsx'));
+const AdminOrederRequests = lazy(() => import('./Pages/Admin/pages/OrderRequest.jsx'));
+const AdminOrederToBeDelivered = lazy(() => import('./Pages/Admin/pages/OrdersToBeDelivered.jsx'));
+const AdminSalesReport = lazy(() => import('./Pages/Admin/pages/SalesReport.jsx'));
 // Add missing components
 const LoadingBar = () => (
   <div className="loading-bar">
@@ -90,6 +93,26 @@ function AppRoutes() {
             </PageTransition>
           } />
           {/* Add other routes as needed */}
+          <Route path="/admin-dashboard" element={
+            <PageTransition>
+              <AdminDashboard />
+            </PageTransition>
+          } />
+          <Route path="/admin-order-request" element={
+            <PageTransition>
+            <AdminOrederRequests/>
+            </PageTransition>
+          } />
+          <Route path="/admin-tobe-delivered" element={
+            <PageTransition>
+              <AdminOrederToBeDelivered />
+            </PageTransition>
+          } />
+          <Route path="/sales-report" element={
+            <PageTransition>
+              <AdminSalesReport />
+            </PageTransition>
+          } />
         </Routes>
       </Suspense>
     </AnimatePresence>
