@@ -6,7 +6,8 @@ import deliveryIcon from '../../../assets/truckSidebar.png';
 import salesIcon from '../../../assets/SalesReportSideBar.png';
 // import './Sidebar.css'; // Optional for custom styles
 
-const Sidebar = () => {
+const Sidebar = (props) => {
+  console.log("props val ",props.val)
   const navItems = [
     { path: "/admin-dashboard", label: "Dashboard", icon: dashboardIcon },
     { path: "/admin-order-request", label: "Order Request", icon: requestIcon },
