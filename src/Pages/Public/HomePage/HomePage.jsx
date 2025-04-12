@@ -1,12 +1,12 @@
 import React from 'react';
 import { h1 } from 'framer-motion/client';
-import About from './About';
-import Login from './Login';
-import History from './History';
-import Navbar from './Navbar';
-import Orders from './Orders';
-import Home from './Home';
-import Contact from './Contact';
+import About from './About.jsx';
+import Login from './Login.jsx';
+import History from './History.jsx';
+import Navbar from './Navbar.jsx';
+import Orders from './Orders.jsx';
+import Home from './Home.jsx';
+import Contact from './Contact.jsx';
 
 export default function Frame_1() {
   return (

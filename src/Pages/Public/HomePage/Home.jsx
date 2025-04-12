@@ -6,8 +6,8 @@ import fileDelivery2 from "./file-delivery-2.png";*/
 import fileDelivery from "/ImagePool/file-delivery.png";
 
 import lockOpen from "/ImagePool/lock-open.png";
-/*import rectangle1 from "./rectangle-1.svg";
-import "./style.css";*/
+import rectangle1 from "/ImagePool/rectangle-1.png";
+/*import "./style.css";*/
 import unsplashXnzrf6Rrkm4 from "/ImagePool/unsplash-xnzrf6rrkm4.png";
 import winter from "/ImagePool/winter.png";
 import './homes.css';
@@ -22,7 +22,7 @@ export const HomePage = () => {
 
           <img className="unsplash" alt="Unsplash" src={unsplashXnzrf6Rrkm4} />
 
-          <p classname="heading">CURRENT ICE RATES AND AVAILABILITY AT YOUR FINGERTIPS</p>
+          <p className="heading">CURRENT ICE RATES AND AVAILABILITY AT YOUR FINGERTIPS</p>
 
           <p className="text-wrapper">
             Stay updated with our competitive ice rates and real-time
@@ -32,9 +32,9 @@ export const HomePage = () => {
 
           <div className="div" />
 
-          <img className="file-delivery" alt="File delivery" src={image} />
+          <img className="file-delivery" alt="File delivery" src={fileDelivery} />
 
-          <img className="img" alt="File delivery" src={fileDelivery2} />
+          <img className="img" alt="File delivery" src={fileDelivery} />
 
           <div className="text-wrapper-2">Faster Delivery</div>
 
@@ -93,3 +93,5 @@ export const HomePage = () => {
     </div>
   );
 };
+
+export default HomePage;
